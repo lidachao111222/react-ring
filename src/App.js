@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useEtherBalance, useEthers } from '@usedapp/core';
 import { formatEther } from '@ethersproject/units';
 import ContractInteraction from './components/contractInteraction';
-
+import {pinata_api_key,pinata_secret_api_key} from './utils'
 import './App.css';
 
 let ringElement;
@@ -24,7 +24,7 @@ function App() {
 
     axios.post(url, data, {
       maxBodyLength: 'Infinity',
-      headers: { 'Content-Type': `multipart/form-data; boundary=${data._boundary}`, pinata_api_key: "f31938a4d7aa2e4d1b1f", pinata_secret_api_key: "4d7091402d1dab7169f561d4ba68d3977f06d7abcb29d8325e50508183848b85" }
+      headers: { 'Content-Type': `multipart/form-data; boundary=${data._boundary}`, pinata_api_key: pinata_api_key, pinata_secret_api_key: pinata_secret_api_key }
     }).then((val) => {
       console.log(val)
       console.log("success")
