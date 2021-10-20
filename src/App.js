@@ -1,13 +1,18 @@
-import { useState } from 'react'
+import { useState } from 'react';
+import axios from 'axios';
+import { useEtherBalance, useEthers } from '@usedapp/core';
+import { formatEther } from '@ethersproject/units';
+import ContractInteraction from './components/contractInteraction';
+
 import './App.css';
-import axios from 'axios'
 
 let ringElement;
 
 function App() {
 
   const [str, setStr] = useState(" ");
-
+  const { activateBrowserWallet, account, deactivate,library } = useEthers();
+  const etherBalance = useEtherBalance(account);
   const url = `https://api.pinata.cloud/pinning/pinFileToIPFS`;
 
   function upload() {
@@ -23,11 +28,22 @@ function App() {
     }).then((val) => {
       console.log(val)
       console.log("success")
+      alert("success")
     })
   }
 
   return (
     <div className="App">
+      {console.log(library)}
+      <ContractInteraction/>
+      {!account && <button onClick={activateBrowserWallet}> Connect </button>}
+      {account && <button onClick={deactivate}> Disconnect </button>}
+
+
+      {account && <p>Account: {account}</p>}
+      {etherBalance && <p>Balance: {formatEther(etherBalance)}</p>}
+
+
       <div style={{ width: "400px", margin: "0 auto" }}>
         <nft-ring ref={(el) => ringElement = el} r-min-ratio=".2" r-max-ratio="1.5" colors="#007F10,#1fE45e,#AEB32E,#6649A6,#FE1777,#fB8F3F,#CB29E3,#4ABBDF,#9839EA,#533874"></nft-ring>
       </div>
@@ -36,6 +52,7 @@ function App() {
       <a href={`data:image/svg;xml,${encodeURIComponent(str)}`} download="chaogeshishuaige.svg" >         image is here </a>
       <p> {`data:image/svg;xml,${encodeURIComponent(str)}`} </p>
     </div>
+
   );
 
 }

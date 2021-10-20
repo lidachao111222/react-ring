@@ -4,10 +4,21 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { defineCustomElements as defineNftRing } from './ring';
+import { ChainId, DAppProvider } from '@usedapp/core';
+
+const config = {
+    readOnlyChainId: ChainId.Rinkeby,
+    readOnlyUrls: {
+        [ChainId.Rinkeby]: 'https://kovan.infura.io/v3/0d5c59884b174b8e878c0789b6daf2d1',
+    },
+}
+
 
 ReactDOM.render(
     <React.StrictMode >
-        <App />
+        <DAppProvider config={config}>
+            <App />
+        </DAppProvider>
     </React.StrictMode>,
     document.getElementById('root')
 );
