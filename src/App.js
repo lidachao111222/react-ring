@@ -10,10 +10,11 @@ let ringElement;
 
 function App() {
 
-  const [str, setStr] = useState(" ");
+  const [str, setStr] = useState("");
 
   const [imgdir, setImgdir] = useState("");
 
+  let result;
 
   const { activateBrowserWallet, account, deactivate, library } = useEthers();
   const etherBalance = useEtherBalance(account);
@@ -22,7 +23,7 @@ function App() {
   function upload() {
     let data = new FormData();
 
-    data.append('file', new Blob([str], { type: 'svg' }));
+    data.append('file', new Blob([result], { type: 'svg' }));
 
     const metadata = JSON.stringify({ name: 'meta-ring', keyvalues: { exampleKey: 'ring' } }); data.append('pinataMetadata', metadata);
 
@@ -37,9 +38,22 @@ function App() {
     })
   }
 
+  async function create() {
+    result = await ringElement.getSvgElement()
+    setStr(result)
+    console.log(result)
+  }
+
+  function createAndUpload() {
+    create();
+    setTimeout(() => {
+      upload();
+    }, 2000);
+  }
+
   return (
     <div className="App">
-      {console.log(library)}
+      {/* {console.log(library)} */}
       <ContractInteraction />
       {!account && <button onClick={activateBrowserWallet}> Connect </button>}
       {account && <button onClick={deactivate}> Disconnect </button>}
@@ -50,18 +64,19 @@ function App() {
 
 
       <div style={{ width: "400px", margin: "0 auto" }}>
-        
-        {imgdir === "" ? <></> :<> success,your image link is  here: <a href={imgdir}>{imgdir}</a><img src={imgdir} alt="nft" /></>}
+
+        {imgdir === "" ? <></> : <> success,your image link is  here: <a href={imgdir}>{imgdir}</a><img src={imgdir} alt="nft" /></>}
       </div>
 
       your demo:
-      <div style={{ width: "400px", margin: "0 auto" }}>
+      <div style={{  width: "0",visibility:"hidden" }}>
         <nft-ring ref={(el) => ringElement = el} r-min-ratio=".2" r-max-ratio="1.5" colors="#007F10,#1fE45e,#AEB32E,#6649A6,#FE1777,#fB8F3F,#CB29E3,#4ABBDF,#9839EA,#533874"></nft-ring>
       </div>
-      <button onClick={() => { upload() }}>click me!</button>
-      <button onClick={async () => setStr(await ringElement.getSvgElement())}>click me!</button>
+
+
+      {/* <button onClick={() => { upload() }}>click me!</button> */}
+      <button onClick={() => createAndUpload()}>click me!</button>
       <a href={`data:image/svg;xml,${encodeURIComponent(str)}`} download="chaogeshishuaige.svg" >         image is here </a>
-      <p> {`data:image/svg;xml,${encodeURIComponent(str)}`} </p>
     </div>
 
   );
