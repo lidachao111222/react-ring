@@ -48,7 +48,7 @@ function App() {
     create();
     setTimeout(() => {
       upload();
-    }, 2000);
+    }, 1000);
   }
 
   return (
@@ -65,10 +65,10 @@ function App() {
 
       <div style={{ width: "400px", margin: "0 auto" }}>
 
-        {imgdir === "" ? <></> : <> success,your image link is  here: <a href={imgdir}>{imgdir}</a><img src={imgdir} alt="nft" /></>}
+        {imgdir === "" ? <></> : <> success,your image link is  here: <a target="_blank" href={imgdir} rel="noreferrer">{imgdir}</a><img src={imgdir} alt="nft" /></>}
       </div>
 
-      your demo:
+      Your creation:
       <div style={{  width: "0",visibility:"hidden" }}>
         <nft-ring ref={(el) => ringElement = el} r-min-ratio=".2" r-max-ratio="1.5" colors="#007F10,#1fE45e,#AEB32E,#6649A6,#FE1777,#fB8F3F,#CB29E3,#4ABBDF,#9839EA,#533874"></nft-ring>
       </div>
