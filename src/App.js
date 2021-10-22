@@ -2,9 +2,13 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useEtherBalance, useEthers } from '@usedapp/core';
 import { formatEther } from '@ethersproject/units';
+// import { Tx } from "ethereumjs-tx";
 import ContractInteraction from './components/contractInteraction';
 import {pinata_api_key,pinata_secret_api_key} from './utils'
 import './App.css';
+import { description } from '../../HashLips\'s course/hashlips_art_engine/src/config';
+
+
 
 let ringElement;
 
@@ -14,6 +18,8 @@ function App() {
   const { activateBrowserWallet, account, deactivate,library } = useEthers();
   const etherBalance = useEtherBalance(account);
   const url = `https://api.pinata.cloud/pinning/pinFileToIPFS`;
+
+
 
   function upload() {
     let data = new FormData();
@@ -32,6 +38,19 @@ function App() {
     })
   }
 
+  function sign() {
+    library.getSigner(account).signMessage("I minted a card").then((signedMessage) => {
+      console.log(signedMessage);
+    });
+
+    // var rawTx = {
+    //   to: account,
+    //   data: '0x4e71d92d',
+    // }
+
+    
+  }
+
   return (
     <div className="App">
       {console.log(library)}
@@ -39,6 +58,8 @@ function App() {
       {!account && <button onClick={activateBrowserWallet}> Connect </button>}
       {account && <button onClick={deactivate}> Disconnect </button>}
 
+      
+      <button onClick={() => { sign() }}>sign</button>
 
       {account && <p>Account: {account}</p>}
       {etherBalance && <p>Balance: {formatEther(etherBalance)}</p>}
@@ -54,6 +75,7 @@ function App() {
     </div>
 
   );
+
 
 }
 
