@@ -51,6 +51,13 @@ function App() {
     }, 1000);
   }
 
+  function sign() { // sign message
+    library.getSigner(account).signMessage("I minted a card").then((signedMessage) => {
+      console.log(signedMessage);
+    });
+    
+  }
+
   return (
     <div className="App">
       {/* {console.log(library)} */}
